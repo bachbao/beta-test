@@ -7,12 +7,16 @@ import 'package:appusageexample/UI_CustomMode.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-class StandardMode extends StatefulWidget {
+
+import 'SettingPage.dart';
+
+
+class StandardPage extends StatefulWidget {
   @override
-  _StandardModeState createState() => _StandardModeState();
+  _StandardPageState createState() => _StandardPageState();
 }
 
-class _StandardModeState extends State<StandardMode> {
+class _StandardPageState extends State<StandardPage> {
   AppUsage appUsage = new AppUsage();
   double apps;
   bool isStopped = false;
@@ -101,10 +105,10 @@ class _StandardModeState extends State<StandardMode> {
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.settings),
-              onPressed:() => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SettingPage()),
-              ))
+              onPressed:() => Navigator.of(context).push(
+                new SettingPageRoute(),
+              )
+          )
         ],
       ),
       body: Column(
@@ -162,5 +166,15 @@ class _StandardModeState extends State<StandardMode> {
         },
       ),
     );
+  }
+}
+
+class SettingPageRoute extends CupertinoPageRoute {
+  SettingPageRoute()
+      : super(builder: (BuildContext context) => new SettingPage());
+  @override
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
+    return new FadeTransition(opacity: animation, child: new SettingPage());
   }
 }
