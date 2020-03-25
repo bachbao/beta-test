@@ -28,6 +28,8 @@ dependencies:
   worker_manager: ^2.3.8
   uuid: ^2.0.4
   async: ^2.4.0
+  device_apps: ^1.0.9
+
 
 
 

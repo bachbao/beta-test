@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:app_usage/app_usage.dart';
 import 'package:appusageexample/Function.dart';
 import 'package:appusageexample/SettingPage.dart';
-import 'package:appusageexample/UI_CustomMode.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 class StandardMode extends StatefulWidget {
   @override
   _StandardModeState createState() => _StandardModeState();
@@ -31,7 +31,7 @@ class _StandardModeState extends State<StandardMode> {
     try {
       DateTime endDate = new DateTime.now();
       DateTime startDate =
-      DateTime(endDate.year, endDate.month, endDate.day, 0, 0, 0);
+          DateTime(endDate.year, endDate.month, endDate.day, 0, 0, 0);
       Map<String, double> usage = await appUsage.fetchUsage(startDate, endDate);
       usage.removeWhere((key, val) => val == 0);
       setState(() => apps = calculate(usage));
@@ -62,7 +62,7 @@ class _StandardModeState extends State<StandardMode> {
   }
 
   FlutterLocalNotificationsPlugin localNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
   initializeNotifications() async {
     var initializeAndroid = AndroidInitializationSettings('ic_launcher');
     var initializeIOS = IOSInitializationSettings();
@@ -101,10 +101,10 @@ class _StandardModeState extends State<StandardMode> {
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.settings),
-              onPressed:() => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SettingPage()),
-              ))
+              onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SettingPage()),
+                  ))
         ],
       ),
       body: Column(
@@ -116,10 +116,10 @@ class _StandardModeState extends State<StandardMode> {
             children: <Widget>[
               Container(
                 height: 70,
-                child: Text("You have been using your phone in XXX hours",
-                style: TextStyle(
-                  fontSize: 15
-                ),),
+                child: Text(
+                  "You have been using your phone in XXX hours",
+                  style: TextStyle(fontSize: 15),
+                ),
               )
             ],
           )
@@ -134,8 +134,6 @@ class _StandardModeState extends State<StandardMode> {
               MaterialPageRoute(builder: (context) => CustomMode()),
             )),
       )*/
-
-
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.notifications),
         onPressed: () async {

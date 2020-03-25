@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SettingPage extends StatefulWidget{
+class SettingPage extends StatefulWidget {
   @override
   _SettingPageState createState() => _SettingPageState();
 }
@@ -12,10 +12,10 @@ class _SettingPageState extends State<SettingPage> {
       appBar: AppBar(
         title: Text("Settings"),
       ),
-      body: Center(child: Text("KILL ME PLS",
-      style: TextStyle(
-        fontSize: 50
-      ),
+      body: Center(
+          child: Text(
+        "KILL ME PLS",
+        style: TextStyle(fontSize: 50),
       )),
     );
   }
