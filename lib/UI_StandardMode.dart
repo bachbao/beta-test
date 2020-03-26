@@ -1,15 +1,12 @@
 import 'dart:async';
 
 import 'package:app_usage/app_usage.dart';
-import 'package:appusageexample/Function.dart';
 import 'package:appusageexample/SettingPage.dart';
-import 'package:appusageexample/UI_CustomMode.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'SettingPage.dart';
-
 
 class StandardPage extends StatefulWidget {
   @override
@@ -20,7 +17,7 @@ class _StandardPageState extends State<StandardPage> {
   bool isSwitched = false;
   AppUsage appUsage = new AppUsage();
   double apps;
-  bool isStopped = false;
+  String mins;
   final myController = TextEditingController();
   final myController0 = TextEditingController();
   @override
@@ -36,14 +33,15 @@ class _StandardPageState extends State<StandardPage> {
     try {
       DateTime endDate = new DateTime.now();
       DateTime startDate =
-      DateTime(endDate.year, endDate.month, endDate.day, 0, 0, 0);
+          DateTime(endDate.year, endDate.month, endDate.day, 0, 0, 0);
       Map<String, double> usage = await appUsage.fetchUsage(startDate, endDate);
       usage.removeWhere((key, val) => val == 0);
       setState(() => apps = calculate(usage));
+      mins = (apps / 60).toStringAsFixed(2);
       usage.forEach((k, v) {
         if (v > 3300) {
           DateTime now = DateTime.now().add(
-            Duration(seconds: 60),
+            Duration(seconds: 5),
           );
           singleNotification(
             now,
@@ -67,7 +65,7 @@ class _StandardPageState extends State<StandardPage> {
   }
 
   FlutterLocalNotificationsPlugin localNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
   initializeNotifications() async {
     var initializeAndroid = AndroidInitializationSettings('ic_launcher');
     var initializeIOS = IOSInitializationSettings();
@@ -103,20 +101,16 @@ class _StandardPageState extends State<StandardPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            'Standard Mode',
-            style: TextStyle(
-              fontFamily: 'Lato',
-              fontSize: 20,
-              fontWeight: FontWeight.bold
-            ),
+          'Standard Mode',
+          style: TextStyle(
+              fontFamily: 'Lato', fontSize: 20, fontWeight: FontWeight.bold),
         ),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.list),
-              onPressed:() => Navigator.of(context).push(
-                new SettingPageRoute(),
-              )
-          )
+              onPressed: () => Navigator.of(context).push(
+                    new SettingPageRoute(),
+                  ))
         ],
       ),
       body: Column(
@@ -128,10 +122,9 @@ class _StandardPageState extends State<StandardPage> {
               Text(
                 'Notification',
                 style: TextStyle(
-                  fontFamily: 'Lato',
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold
-                ),
+                    fontFamily: 'Lato',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
               ),
               SizedBox(width: 200),
               Switch(
@@ -142,29 +135,22 @@ class _StandardPageState extends State<StandardPage> {
                   setState(() {
                     isSwitched = value;
                   });
-
                 },
-
               )
             ],
           ),
           SizedBox(height: 450),
-
           Text(
-            'Total time on mobile: XXX',
+            'Total time on mobile: $mins minutes  ',
             style: TextStyle(
-              fontSize: 20,
-              fontFamily: 'Lato',
-              fontWeight: FontWeight.bold
-            ),
+                fontSize: 20, fontFamily: 'Lato', fontWeight: FontWeight.bold),
           ),
           Text(
             '(renew every 24 hours)',
             style: TextStyle(
                 fontSize: 20,
                 fontFamily: 'Lato',
-                fontWeight: FontWeight.normal
-            ),
+                fontWeight: FontWeight.normal),
           )
         ],
       ),
@@ -178,16 +164,15 @@ class _StandardPageState extends State<StandardPage> {
             )),
       )*/
 
-
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.notifications),
         onPressed: () async {
-          Timer.periodic(new Duration(seconds: 90), (timer) {
+          Timer.periodic(new Duration(seconds: 10), (timer) {
             getUsageStats();
-            print('You have spend $apps second');
+            print('You have spend $mins minutes');
             if (apps > 3300) {
               DateTime now = DateTime.now().add(
-                Duration(seconds: 60),
+                Duration(seconds: 5),
               );
               singleNotification(
                 now,
@@ -196,9 +181,9 @@ class _StandardPageState extends State<StandardPage> {
                 98123871,
               );
             } else if (apps > 3900) {
-              isStopped = true;
+              timer.cancel();
             }
-            if (isStopped) {
+            if (isSwitched == false) {
               timer.cancel();
             }
           });

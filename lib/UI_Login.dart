@@ -1,10 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'UI_CustomMode.dart';
-import 'UI_StandardMode.dart';
-import 'package:flutter/cupertino.dart';
-
-import 'UI_StandardMode.dart';
 import 'UI_StandardMode.dart';
 
 class LoginState extends StatefulWidget {
@@ -62,33 +59,25 @@ class _LoginStateState extends State<LoginState> {
             padding: const EdgeInsets.all(36.0),
             child: Column(
               children: <Widget>[
-                SizedBox(height:50),
-                Text(
-                  'Welcome to',
-                  style: TextStyle(
-                    fontSize: 50,
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.bold
-                  )
-                ),
-                Text(
-                  'FreeTime',
-                  style: TextStyle(
-                      fontSize: 50,
-                      fontFamily: 'Lato',
-                      fontWeight: FontWeight.bold
-                  )
-                ),
+                SizedBox(height: 50),
+                Text('Welcome to',
+                    style: TextStyle(
+                        fontSize: 50,
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.bold)),
+                Text('FreeTime',
+                    style: TextStyle(
+                        fontSize: 50,
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.bold)),
                 SizedBox(height: 20),
-                Image(
-                  image: AssetImage('assets/icon.png')
-                ),
-                SizedBox(height:80),
+                Image(image: AssetImage('assets/icon.png')),
+                SizedBox(height: 80),
                 Text(
                   "Choose your plan",
                   style: TextStyle(
-                      fontSize: 30,
-                      fontFamily: 'Lato',
+                    fontSize: 30,
+                    fontFamily: 'Lato',
                   ),
                 ),
                 SizedBox(height: 25.0),
