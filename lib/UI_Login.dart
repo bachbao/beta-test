@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'UI_CustomMode.dart';
@@ -60,6 +61,7 @@ class _LoginStateState extends State<LoginState> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+<<<<<<< Updated upstream
                 SizedBox(
                     height: 155.0,
                     child: Text(
@@ -73,6 +75,28 @@ class _LoginStateState extends State<LoginState> {
                 Text(
                   "Choose your plan",
                   style: TextStyle(fontSize: 40),
+=======
+                SizedBox(height: 50),
+                Text('Welcome to',
+                    style: TextStyle(
+                        fontSize: 50,
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.bold)),
+                Text('FreeTime',
+                    style: TextStyle(
+                        fontSize: 50,
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.bold)),
+                SizedBox(height: 20),
+                Image(image: AssetImage('assets/icon.png')),
+                SizedBox(height: 80),
+                Text(
+                  "Choose your plan",
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontFamily: 'Lato',
+                  ),
+>>>>>>> Stashed changes
                 ),
                 SizedBox(height: 25.0),
                 standard,
@@ -91,3 +115,30 @@ class _LoginStateState extends State<LoginState> {
     );
   }
 }
+<<<<<<< Updated upstream
+=======
+
+class StandardPageRoute extends CupertinoPageRoute {
+  StandardPageRoute()
+      : super(builder: (BuildContext context) => new StandardPage());
+
+  //OPTIONAL IF YOU WISH TO HAVE SOME EXTRA ANIMATION WHILE ROUTING
+  @override
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
+    return new FadeTransition(opacity: animation, child: new StandardPage());
+  }
+}
+
+class CustomModeRoute extends CupertinoPageRoute {
+  CustomModeRoute()
+      : super(builder: (BuildContext context) => new CustomMode());
+
+  //OPTIONAL IF YOU WISH TO HAVE SOME EXTRA ANIMATION WHILE ROUTING
+  @override
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
+    return new FadeTransition(opacity: animation, child: new CustomMode());
+  }
+}
+>>>>>>> Stashed changes

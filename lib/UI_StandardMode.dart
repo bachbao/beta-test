@@ -7,7 +7,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+<<<<<<< Updated upstream
 class StandardMode extends StatefulWidget {
+=======
+import 'SettingPage.dart';
+
+class StandardPage extends StatefulWidget {
+>>>>>>> Stashed changes
   @override
   _StandardModeState createState() => _StandardModeState();
 }
@@ -100,10 +106,16 @@ class _StandardModeState extends State<StandardMode> {
         title: Text('Standard Mode'),
         actions: <Widget>[
           IconButton(
+<<<<<<< Updated upstream
               icon: Icon(Icons.settings),
               onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => SettingPage()),
+=======
+              icon: Icon(Icons.dashboard),
+              onPressed: () => Navigator.of(context).push(
+                    new SettingPageRoute(),
+>>>>>>> Stashed changes
                   ))
         ],
       ),
@@ -134,6 +146,10 @@ class _StandardModeState extends State<StandardMode> {
               MaterialPageRoute(builder: (context) => CustomMode()),
             )),
       )*/
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.notifications),
         onPressed: () async {
@@ -162,3 +178,16 @@ class _StandardModeState extends State<StandardMode> {
     );
   }
 }
+<<<<<<< Updated upstream
+=======
+
+class SettingPageRoute extends CupertinoPageRoute {
+  SettingPageRoute()
+      : super(builder: (BuildContext context) => new SettingPage());
+  @override
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
+    return new FadeTransition(opacity: animation, child: new SettingPage());
+  }
+}
+>>>>>>> Stashed changes

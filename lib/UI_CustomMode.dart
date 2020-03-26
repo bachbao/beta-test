@@ -102,7 +102,7 @@ class _CustomModeState extends State<CustomMode> {
         title: Text("Custome Mode"),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.settings),
+              icon: Icon(Icons.dashboard),
               onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => SettingPage()),
