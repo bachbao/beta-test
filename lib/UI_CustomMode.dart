@@ -14,6 +14,8 @@ class CustomMode extends StatefulWidget {
 class _CustomModeState extends State<CustomMode> {
   AppUsage appUsage = new AppUsage();
   double apps;
+  bool isPressed = false;
+  bool isSwitched = false;
   bool isStopped = false;
   String value1 = "";
   String value2 = "";
@@ -125,47 +127,112 @@ class _CustomModeState extends State<CustomMode> {
                 onChanged: (val1) =>
                     value1 = val1, // Only numbers can be entered
               ),
-              Expanded(
-                child: new TextFormField(
-                  controller: myController,
-                  decoration:
-                      new InputDecoration(labelText: "Enter your apps number"),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    WhitelistingTextInputFormatter.digitsOnly
-                  ],
-                  onChanged: (val2) =>
-                      value2 = val2, // Only numbers can be entered
+
+              new TextFormField(
+                controller: myController,
+                decoration:
+                    new InputDecoration(labelText: "Enter your apps number"),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  WhitelistingTextInputFormatter.digitsOnly
+                ],
+                onChanged: (val2) =>
+                    value2 = val2, // Only numbers can be entered
+                ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Notification',
+                    style: TextStyle(
+                        fontFamily: 'Lato',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(width: 165),
+                  Switch(
+                    activeTrackColor: Colors.black45,
+                    activeColor: Colors.black,
+                    value: isSwitched,
+                    onChanged: (value) {
+                      setState(() {
+                        isSwitched = value;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 220),
+              Text(
+                isPressed ? 'Total time on mobile: XXX minutes' : '',                                     //FIX LAI XXX
+                style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'Lato',
+                    fontWeight: FontWeight.bold
                 ),
               ),
-            ]),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.notifications),
-        onPressed: () async {
-          print(value1);
-          print(value2);
-          Timer.periodic(new Duration(seconds: 90), (timer) {
-            getUsageStats();
-            print('You have spend $apps second');
-            if (apps > (num.parse(value1) - 300)) {
-              DateTime now = DateTime.now().add(
-                Duration(seconds: 60),
-              );
-              singleNotification(
-                now,
-                "Notification",
-                "You have been using your phone for too long!! Get up and do some thing",
-                98123871,
-              );
-            } else if (apps > (num.parse(value1) + 300)) {
-              isStopped = true;
-            }
-            if (isStopped) {
-              timer.cancel();
-            }
-          });
-        },
+              Text(
+                isPressed ? '(renew every 24 hours)' : '',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'Lato',
+                    fontWeight: FontWeight.normal),
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  SizedBox(width: 150),
+                  FlatButton(
+                    highlightColor: Colors.black12,
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0),
+                    ),
+                    color: isPressed ? Colors.black26 : Colors.black,
+                    textColor: Colors.white,
+                    padding: EdgeInsets.fromLTRB(30, 12, 30, 12),
+                    child: Text(
+                      isPressed ? 'ENABLED' : 'ENABLE',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onPressed: () async {
+                      print(value1);
+                      print(value2);
+                      Timer.periodic(new Duration(seconds: 90), (timer) {
+                        getUsageStats();
+                        print('You have spend $apps second');
+                        if (apps > (num.parse(value1) - 300)) {
+                          DateTime now = DateTime.now().add(
+                            Duration(seconds: 60),
+                          );
+                          singleNotification(
+                            now,
+                            "Notification",
+                            "You have been using your phone for too long!! Get up and do some thing",
+                            98123871,
+                          );
+                        } else if (apps > (num.parse(value1) + 300)) {
+                          isStopped = true;                                                                 //FIX LAI BIEN O CHO NAY THANH ISPRESSED
+                        }
+                        if (isStopped) {                                                                    //CHO NAY NUA
+                          timer.cancel();
+                        }
+                      });
+
+                      setState(() {
+                        isPressed = true;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ]
+        ),
       ),
     );
   }
@@ -174,9 +241,9 @@ class _CustomModeState extends State<CustomMode> {
 class SettingPageRoute extends CupertinoPageRoute {
   SettingPageRoute()
       : super(builder: (BuildContext context) => new SettingPage());
-  @override
+  /*@override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
     return new FadeTransition(opacity: animation, child: new SettingPage());
-  }
+  }*/
 }

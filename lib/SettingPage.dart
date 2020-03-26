@@ -1,5 +1,8 @@
 import 'package:app_usage/app_usage.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:flutter/cupertino.dart';
+
 
 class SettingPage extends StatefulWidget {
   @override
@@ -44,11 +47,17 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
-          title: const Text('App Usage '),
+          title: Text(
+              'App Usage',
+              style: TextStyle(
+                  fontFamily: 'Lato', fontSize: 20, fontWeight: FontWeight.bold
+              ),
+          ),
+          actions: <Widget>[],
         ),
+
         body: Text(
           apps,
           overflow: TextOverflow.ellipsis,
@@ -58,7 +67,7 @@ class _SettingPageState extends State<SettingPage> {
         ),
         floatingActionButton: FloatingActionButton(
             onPressed: getUsageStats, child: Icon(Icons.cached)),
-      ),
-    );
+      );
+
   }
 }

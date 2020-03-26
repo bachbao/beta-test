@@ -15,11 +15,14 @@ class StandardPage extends StatefulWidget {
 
 class _StandardPageState extends State<StandardPage> {
   bool isSwitched = false;
+  bool isPressed = false;
   AppUsage appUsage = new AppUsage();
   double apps;
   String mins;
   final myController = TextEditingController();
   final myController0 = TextEditingController();
+
+
   @override
   void dispose() {
     // Clean up the controller when the widget is removed from the
@@ -103,7 +106,7 @@ class _StandardPageState extends State<StandardPage> {
         title: Text(
           'Standard Mode',
           style: TextStyle(
-              fontFamily: 'Lato', fontSize: 20, fontWeight: FontWeight.bold),
+              fontFamily: 'Lato', fontSize: 22, fontWeight: FontWeight.bold),
         ),
         actions: <Widget>[
           IconButton(
@@ -115,7 +118,7 @@ class _StandardPageState extends State<StandardPage> {
       ),
       body: Column(
         children: <Widget>[
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -126,9 +129,9 @@ class _StandardPageState extends State<StandardPage> {
                     fontSize: 20,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(width: 200),
+              SizedBox(width: 180),
               Switch(
-                activeTrackColor: Colors.black54,
+                activeTrackColor: Colors.black45,
                 activeColor: Colors.black,
                 value: isSwitched,
                 onChanged: (value) {
@@ -139,19 +142,72 @@ class _StandardPageState extends State<StandardPage> {
               )
             ],
           ),
-          SizedBox(height: 450),
+          SizedBox(height: 390),
           Text(
-            'Total time on mobile: $mins minutes  ',
+            isPressed ? 'Total time on mobile: $mins minutes' : '',
             style: TextStyle(
-                fontSize: 20, fontFamily: 'Lato', fontWeight: FontWeight.bold),
+                fontSize: 20,
+                fontFamily: 'Lato',
+                fontWeight: FontWeight.bold
+            ),
           ),
           Text(
-            '(renew every 24 hours)',
+            isPressed ? '(renew every 24 hours)' : '',
             style: TextStyle(
                 fontSize: 20,
                 fontFamily: 'Lato',
                 fontWeight: FontWeight.normal),
-          )
+          ),
+          SizedBox(height: 20),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              SizedBox(width: 120),
+              FlatButton(
+                highlightColor: Colors.black12,
+                shape: new RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(30.0),
+                ),
+                color: isPressed ? Colors.black26 : Colors.black,
+                textColor: Colors.white,
+                padding: EdgeInsets.fromLTRB(30, 12, 30, 12),
+                child: Text(
+                  isPressed ? 'ENABLED' : 'ENABLE',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                onPressed: () async {
+                  Timer.periodic(new Duration(seconds: 10), (timer) {
+                    getUsageStats();
+                    print('You have spend $mins minutes');
+                    if (apps > 3300) {
+                      DateTime now = DateTime.now().add(
+                        Duration(seconds: 5),
+                      );
+                      singleNotification(
+                        now,
+                        "Notification",
+                        "You have been using your phone for too long!! Get up and do some thing",
+                        98123871,
+                      );
+                    } else if (apps > 3900) {
+                      timer.cancel();
+                    }
+                    if (isSwitched == false) {
+                      timer.cancel();
+                    }
+                  });
+
+                  setState(() {
+                    isPressed = true;
+                  });
+                },
+              ),
+            ],
+          ),
         ],
       ),
       /*
@@ -163,32 +219,6 @@ class _StandardPageState extends State<StandardPage> {
               MaterialPageRoute(builder: (context) => CustomMode()),
             )),
       )*/
-
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.notifications),
-        onPressed: () async {
-          Timer.periodic(new Duration(seconds: 10), (timer) {
-            getUsageStats();
-            print('You have spend $mins minutes');
-            if (apps > 3300) {
-              DateTime now = DateTime.now().add(
-                Duration(seconds: 5),
-              );
-              singleNotification(
-                now,
-                "Notification",
-                "You have been using your phone for too long!! Get up and do some thing",
-                98123871,
-              );
-            } else if (apps > 3900) {
-              timer.cancel();
-            }
-            if (isSwitched == false) {
-              timer.cancel();
-            }
-          });
-        },
-      ),
     );
   }
 }
@@ -196,9 +226,4 @@ class _StandardPageState extends State<StandardPage> {
 class SettingPageRoute extends CupertinoPageRoute {
   SettingPageRoute()
       : super(builder: (BuildContext context) => new SettingPage());
-  @override
-  Widget buildPage(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation) {
-    return new FadeTransition(opacity: animation, child: new SettingPage());
-  }
 }

@@ -101,19 +101,19 @@ class _LoginStateState extends State<LoginState> {
 class StandardPageRoute extends CupertinoPageRoute {
   StandardPageRoute()
       : super(builder: (BuildContext context) => new StandardPage());
-  @override
+  /*@override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
     return new FadeTransition(opacity: animation, child: new StandardPage());
-  }
+  }*/
 }
 
 class CustomModeRoute extends CupertinoPageRoute {
   CustomModeRoute()
       : super(builder: (BuildContext context) => new CustomMode());
-  @override
+  /*@override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
     return new FadeTransition(opacity: animation, child: new CustomMode());
-  }
+  }*/
 }
