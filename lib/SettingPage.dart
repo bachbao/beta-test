@@ -1,3 +1,4 @@
+import 'package:appusageexample/Function.dart';
 import 'package:flutter/material.dart';
 
 class SettingPage extends StatefulWidget{
@@ -10,13 +11,11 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Settings"),
+        title: Text("App Usage Data"),
       ),
-      body: Center(child: Text("KILL ME PLS",
-      style: TextStyle(
-        fontSize: 50
+      body: Center(
+          child: AppList()
       ),
-      )),
     );
   }
 }

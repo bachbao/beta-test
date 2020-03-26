@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:flutter/cupertino.dart';
 import 'package:app_usage/app_usage.dart';
 import 'package:appusageexample/SettingPage.dart';
 import 'package:flutter/material.dart';
@@ -102,11 +102,11 @@ class _CustomModeState extends State<CustomMode> {
         title: Text("Custome Mode"),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SettingPage()),
-                  ))
+              icon: Icon(Icons.list),
+              onPressed:() => Navigator.of(context).push(
+                new SettingPageRoute(),
+              )
+          )
         ],
       ),
       body: new Container(
@@ -168,5 +168,15 @@ class _CustomModeState extends State<CustomMode> {
         },
       ),
     );
+  }
+}
+
+class SettingPageRoute extends CupertinoPageRoute {
+  SettingPageRoute()
+      : super(builder: (BuildContext context) => new SettingPage());
+  @override
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
+    return new FadeTransition(opacity: animation, child: new SettingPage());
   }
 }

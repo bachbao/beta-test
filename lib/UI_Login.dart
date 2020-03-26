@@ -112,9 +112,6 @@ class _LoginStateState extends State<LoginState> {
 class StandardPageRoute extends CupertinoPageRoute {
   StandardPageRoute()
       : super(builder: (BuildContext context) => new StandardPage());
-
-
-  //OPTIONAL IF YOU WISH TO HAVE SOME EXTRA ANIMATION WHILE ROUTING
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
@@ -125,9 +122,6 @@ class StandardPageRoute extends CupertinoPageRoute {
 class CustomModeRoute extends CupertinoPageRoute {
   CustomModeRoute()
       : super(builder: (BuildContext context) => new CustomMode());
-
-
-  //OPTIONAL IF YOU WISH TO HAVE SOME EXTRA ANIMATION WHILE ROUTING
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {

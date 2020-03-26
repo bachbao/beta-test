@@ -17,6 +17,7 @@ class StandardPage extends StatefulWidget {
 }
 
 class _StandardPageState extends State<StandardPage> {
+  bool isSwitched = false;
   AppUsage appUsage = new AppUsage();
   double apps;
   bool isStopped = false;
@@ -101,10 +102,17 @@ class _StandardPageState extends State<StandardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Standard Mode'),
+        title: Text(
+            'Standard Mode',
+            style: TextStyle(
+              fontFamily: 'Lato',
+              fontSize: 20,
+              fontWeight: FontWeight.bold
+            ),
+        ),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.settings),
+              icon: Icon(Icons.list),
               onPressed:() => Navigator.of(context).push(
                 new SettingPageRoute(),
               )
@@ -113,19 +121,50 @@ class _StandardPageState extends State<StandardPage> {
       ),
       body: Column(
         children: <Widget>[
-          Expanded(child: AppList()),
+          SizedBox(height: 20),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Container(
-                height: 70,
-                child: Text("You have been using your phone in XXX hours",
+              Text(
+                'Notification',
                 style: TextStyle(
-                  fontSize: 15
-                ),),
+                  fontFamily: 'Lato',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+              SizedBox(width: 200),
+              Switch(
+                activeTrackColor: Colors.black54,
+                activeColor: Colors.black,
+                value: isSwitched,
+                onChanged: (value) {
+                  setState(() {
+                    isSwitched = value;
+                  });
+
+                },
+
               )
             ],
+          ),
+          SizedBox(height: 450),
+
+          Text(
+            'Total time on mobile: XXX',
+            style: TextStyle(
+              fontSize: 20,
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.bold
+            ),
+          ),
+          Text(
+            '(renew every 24 hours)',
+            style: TextStyle(
+                fontSize: 20,
+                fontFamily: 'Lato',
+                fontWeight: FontWeight.normal
+            ),
           )
         ],
       ),
