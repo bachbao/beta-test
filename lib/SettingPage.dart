@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:app_usage/app_usage.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +26,8 @@ class _SettingPageState extends State<SettingPage> {
       DateTime endDate = new DateTime.now();
       DateTime startDate =
           DateTime(endDate.year, endDate.month, endDate.day, 0, 0, 0);
-      Map<String, double> usage = await appUsage.fetchUsage(startDate, endDate);
+      LinkedHashMap<String, double> usage =
+          await appUsage.fetchUsage(startDate, endDate);
       usage.removeWhere((key, val) => val == 0);
       setState(() => apps = makeString(usage));
     } on AppUsageException catch (exception) {
@@ -35,9 +38,21 @@ class _SettingPageState extends State<SettingPage> {
   String makeString(Map<String, double> usage) {
     String result = '';
     usage.forEach((k, v) {
+<<<<<<< Updated upstream
       String appName = k.split('.').last;
       String timeInMins = (v / 60).toStringAsFixed(2);
       result += '$appName : $timeInMins minutes\n';
+=======
+      if (v > 3600) {
+        String appName = k.split('.').last;
+        String timeInMins = (v / 60).toStringAsFixed(2);
+        result += '$appName : $timeInMins mins\n';
+      } else {
+        String appName = k.split('.').last;
+        String timeInMins = (v / 60).toStringAsFixed(2);
+        result += '$appName : $timeInMins mins\n';
+      }
+>>>>>>> Stashed changes
     });
     return result;
   }
