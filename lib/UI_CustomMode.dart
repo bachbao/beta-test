@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
+
 import 'package:app_usage/app_usage.dart';
 import 'package:appusageexample/SettingPage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -19,6 +20,7 @@ class _CustomModeState extends State<CustomMode> {
   bool isStopped = false;
   String value1 = "";
   String value2 = "";
+  String mins;
   final myController = TextEditingController();
   final myController0 = TextEditingController();
   @override
@@ -38,6 +40,7 @@ class _CustomModeState extends State<CustomMode> {
       Map<String, double> usage = await appUsage.fetchUsage(startDate, endDate);
       usage.removeWhere((key, val) => val == 0);
       setState(() => apps = calculate(usage));
+      mins = (apps / 60).toStringAsFixed(2);
       usage.forEach((k, v) {
         if (v > (num.parse(value2) - 300)) {
           DateTime now = DateTime.now().add(
@@ -105,10 +108,9 @@ class _CustomModeState extends State<CustomMode> {
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.list),
-              onPressed:() => Navigator.of(context).push(
-                new SettingPageRoute(),
-              )
-          )
+              onPressed: () => Navigator.of(context).push(
+                    new SettingPageRoute(),
+                  ))
         ],
       ),
       body: new Container(
@@ -127,7 +129,6 @@ class _CustomModeState extends State<CustomMode> {
                 onChanged: (val1) =>
                     value1 = val1, // Only numbers can be entered
               ),
-
               new TextFormField(
                 controller: myController,
                 decoration:
@@ -138,7 +139,7 @@ class _CustomModeState extends State<CustomMode> {
                 ],
                 onChanged: (val2) =>
                     value2 = val2, // Only numbers can be entered
-                ),
+              ),
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -165,12 +166,11 @@ class _CustomModeState extends State<CustomMode> {
               ),
               SizedBox(height: 220),
               Text(
-                isPressed ? 'Total time on mobile: XXX minutes' : '',                                     //FIX LAI XXX
+                isPressed ? 'Total time on mobile: $mins minutes' : '',
                 style: TextStyle(
                     fontSize: 20,
                     fontFamily: 'Lato',
-                    fontWeight: FontWeight.bold
-                ),
+                    fontWeight: FontWeight.bold),
               ),
               Text(
                 isPressed ? '(renew every 24 hours)' : '',
@@ -217,9 +217,9 @@ class _CustomModeState extends State<CustomMode> {
                             98123871,
                           );
                         } else if (apps > (num.parse(value1) + 300)) {
-                          isStopped = true;                                                                 //FIX LAI BIEN O CHO NAY THANH ISPRESSED
+                          isSwitched = false;
                         }
-                        if (isStopped) {                                                                    //CHO NAY NUA
+                        if (isSwitched == false) {
                           timer.cancel();
                         }
                       });
@@ -231,8 +231,7 @@ class _CustomModeState extends State<CustomMode> {
                   ),
                 ],
               ),
-            ]
-        ),
+            ]),
       ),
     );
   }
