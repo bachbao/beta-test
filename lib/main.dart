@@ -1,11 +1,13 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
+
 import 'package:app_usage/app_usage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'UI_Login.dart';
+
 void main() async {
   runApp(MyApp());
 }
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.white,
       ),
-      home: LoginState(),
+      home: LaunchDecision(),
     );
   }
 }

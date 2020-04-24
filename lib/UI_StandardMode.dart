@@ -22,7 +22,6 @@ class _StandardPageState extends State<StandardPage> {
   final myController = TextEditingController();
   final myController0 = TextEditingController();
 
-
   @override
   void dispose() {
     // Clean up the controller when the widget is removed from the
@@ -146,10 +145,7 @@ class _StandardPageState extends State<StandardPage> {
           Text(
             isPressed ? 'Total time on mobile: $mins minutes' : '',
             style: TextStyle(
-                fontSize: 20,
-                fontFamily: 'Lato',
-                fontWeight: FontWeight.bold
-            ),
+                fontSize: 20, fontFamily: 'Lato', fontWeight: FontWeight.bold),
           ),
           Text(
             isPressed ? '(renew every 24 hours)' : '',
