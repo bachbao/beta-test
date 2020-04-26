@@ -72,11 +72,11 @@ class _LoginStateState extends State<LoginState> {
     );
     final setting = Material(
       elevation: 5.0,
-      borderRadius: BorderRadius.circular(30.0),
-      color: Colors.white,
+      borderRadius: BorderRadius.circular(40.0),
+      color: Colors.greenAccent,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        padding: EdgeInsets.fromLTRB(7.0, 4.0, 7.0, 4.0),
         onPressed: () async {
           addModeStandard1();
           Navigator.push(
@@ -84,7 +84,7 @@ class _LoginStateState extends State<LoginState> {
             new SettingPageRoute(),
           );
         },
-        child: Text("Listview",
+        child: Text("Usage Time",
             textAlign: TextAlign.center,
             style: style.copyWith(
                 color: Colors.black, fontWeight: FontWeight.bold)),
@@ -109,7 +109,7 @@ class _LoginStateState extends State<LoginState> {
                         fontSize: 50,
                         fontFamily: 'Lato',
                         fontWeight: FontWeight.bold)),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 Image(image: AssetImage('assets/icon.png')),
                 SizedBox(height: 80),
                 Text(
@@ -125,7 +125,15 @@ class _LoginStateState extends State<LoginState> {
                   height: 25.0,
                 ),
                 customize,
-                SizedBox(height: 25.0),
+                SizedBox(height: 15.0),
+                Text(
+                  "Or click here",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontFamily: 'Lato',
+                    color: Colors.black
+                  ),
+                ),
                 setting,
                 SizedBox(
                   height: 15.0,
