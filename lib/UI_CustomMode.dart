@@ -20,7 +20,7 @@ class _CustomModeState extends State<CustomMode> {
   bool isStopped = false;
   String value1 = "";
   String value2 = "";
-  String mins;
+  String mins, totalTime;
   final myController = TextEditingController();
   final myController0 = TextEditingController();
   @override
@@ -40,7 +40,8 @@ class _CustomModeState extends State<CustomMode> {
       Map<String, double> usage = await appUsage.fetchUsage(startDate, endDate);
       usage.removeWhere((key, val) => val == 0);
       setState(() => apps = calculate(usage));
-      mins = (apps / 60).toStringAsFixed(2);
+      totalTime = apps > 3600 ? (apps / 3600).toStringAsFixed(0) : (apps / 60).toStringAsFixed(0);
+      mins = apps > 3600 ? "$totalTime hours" : "$totalTime minutes";
       usage.forEach((k, v) {
         if (v > (num.parse(value2) - 300)) {
           DateTime now = DateTime.now().add(
@@ -102,6 +103,7 @@ class _CustomModeState extends State<CustomMode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("Custome Mode"),
@@ -116,118 +118,155 @@ class _CustomModeState extends State<CustomMode> {
       body: new Container(
         padding: const EdgeInsets.all(40.0),
         child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              new TextFormField(
-                controller: myController0,
-                decoration:
-                    new InputDecoration(labelText: "Enter your total number"),
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  WhitelistingTextInputFormatter.digitsOnly
-                ],
-                onChanged: (val1) =>
+              //TextForm Part
+              Column(
+                children: <Widget>[
+                  new TextFormField(
+                    controller: myController0,
+                    cursorColor: Colors.black54,
+                    decoration:
+                    new InputDecoration(
+                        labelText: "Enter on-screen time limit",
+                        hintText: "Time limit for using mobile (in minute)",
+                        hintStyle: TextStyle(fontSize: 14),
+                        labelStyle: TextStyle(color: Colors.black),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black, width: 2.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black, width: 2.0),
+                        )
+                    ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      WhitelistingTextInputFormatter.digitsOnly
+                    ],
+                    onChanged: (val1) =>
                     value1 = val1, // Only numbers can be entered
-              ),
-              new TextFormField(
-                controller: myController,
-                decoration:
-                    new InputDecoration(labelText: "Enter your apps number"),
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  WhitelistingTextInputFormatter.digitsOnly
-                ],
-                onChanged: (val2) =>
+                  ),
+                  SizedBox(height: 20),
+
+                  new TextFormField(
+                    controller: myController,
+                    cursorColor: Colors.black54,
+                    decoration:
+                    new InputDecoration(
+                        labelText: "Enter app time limt",
+                        hintText: "Time limit for using each app (in minute)",
+                        hintStyle: TextStyle(fontSize: 14),
+                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(color: Colors.black),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black, width: 2.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black, width: 2.0),
+                        )
+                    ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      WhitelistingTextInputFormatter.digitsOnly
+                    ],
+                    onChanged: (val2) =>
                     value2 = val2, // Only numbers can be entered
+                  ),
+                  SizedBox(height: 10),
+                  //Switch and Notification
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'Notification',
+                        style: TextStyle(
+                            fontFamily: 'Lato',
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+
+                      Switch(
+                        activeTrackColor: Colors.black45,
+                        activeColor: Colors.black,
+                        value: isSwitched,
+                        onChanged: (value) {
+                          setState(() {
+                            isSwitched = value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+
+
+              //Bottom Part
+              Column(
                 children: <Widget>[
                   Text(
-                    'Notification',
+                    isPressed ? 'Total time on mobile: $mins' : '',
                     style: TextStyle(
-                        fontFamily: 'Lato',
                         fontSize: 20,
+                        fontFamily: 'Lato',
                         fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(width: 165),
-                  Switch(
-                    activeTrackColor: Colors.black45,
-                    activeColor: Colors.black,
-                    value: isSwitched,
-                    onChanged: (value) {
-                      setState(() {
-                        isSwitched = value;
-                      });
-                    },
+                  Text(
+                    isPressed ? '(renew every 24 hours)\n' : ' \n',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.normal),
                   ),
-                ],
-              ),
-              SizedBox(height: 220),
-              Text(
-                isPressed ? 'Total time on mobile: $mins minutes' : '',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.bold),
-              ),
-              Text(
-                isPressed ? '(renew every 24 hours)' : '',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.normal),
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  SizedBox(width: 150),
-                  FlatButton(
-                    highlightColor: Colors.black12,
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0),
-                    ),
-                    color: isPressed ? Colors.black26 : Colors.black,
-                    textColor: Colors.white,
-                    padding: EdgeInsets.fromLTRB(30, 12, 30, 12),
-                    child: Text(
-                      isPressed ? 'ENABLED' : 'ENABLE',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    onPressed: () async {
-                      print(value1);
-                      print(value2);
-                      Timer.periodic(new Duration(seconds: 90), (timer) {
-                        getUsageStats();
-                        print('You have spend $apps second');
-                        if (apps > (num.parse(value1) - 300)) {
-                          DateTime now = DateTime.now().add(
-                            Duration(seconds: 60),
-                          );
-                          singleNotification(
-                            now,
-                            "Notification",
-                            "You have been using your phone for too long!! Get up and do some thing",
-                            98123871,
-                          );
-                        } else if (apps > (num.parse(value1) + 300)) {
-                          isSwitched = false;
-                        }
-                        if (isSwitched == false) {
-                          timer.cancel();
-                        }
-                      });
 
-                      setState(() {
-                        isPressed = true;
-                      });
-                    },
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      FlatButton(
+                        highlightColor: Colors.black12,
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(30.0),
+                        ),
+                        color: isPressed ? Colors.black26 : Colors.black,
+                        textColor: Colors.white,
+                        padding: EdgeInsets.fromLTRB(30, 12, 30, 12),
+                        child: Text(
+                          isPressed ? 'ENABLED' : 'ENABLE',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onPressed: () async {
+                          print(value1);
+                          print(value2);
+                          Timer.periodic(new Duration(seconds: 90), (timer) {
+                            getUsageStats();
+                            print('You have spend $apps second');
+                            if (apps > (num.parse(value1) - 300)) {
+                              DateTime now = DateTime.now().add(
+                                Duration(seconds: 60),
+                              );
+                              singleNotification(
+                                now,
+                                "Notification",
+                                "You have been using your phone for too long!! Get up and do some thing",
+                                98123871,
+                              );
+                            } else if (apps > (num.parse(value1) + 300)) {
+                              isSwitched = false;
+                            }
+                            if (isSwitched == false) {
+                              timer.cancel();
+                            }
+                          });
+
+                          setState(() {
+                            isPressed = true;
+                          });
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 
-
 class SettingPage extends StatefulWidget {
   @override
   _SettingPageState createState() => _SettingPageState();
@@ -11,7 +10,7 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   AppUsage appUsage = new AppUsage();
-  String apps = 'Unknown';
+  String apps = " ";
 
   @override
   void initState() {
@@ -58,15 +57,29 @@ class _SettingPageState extends State<SettingPage> {
           actions: <Widget>[],
         ),
 
-        body: Text(
-          apps,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: 25.0, // insert your font size here
-          ),
+        body:Column(
+          children: <Widget>[
+            SizedBox(height: 20),
+            Row(
+              children: <Widget>[
+                SizedBox(width: 20),
+                Text(
+                  apps,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontSize: 20.0, // insert your font size here
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
         floatingActionButton: FloatingActionButton(
-            onPressed: getUsageStats, child: Icon(Icons.cached)),
+            onPressed: getUsageStats,
+            backgroundColor: Colors.black,
+            child: Icon(Icons.cached),
+        )
       );
 
   }

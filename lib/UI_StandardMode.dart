@@ -18,7 +18,7 @@ class _StandardPageState extends State<StandardPage> {
   bool isPressed = false;
   AppUsage appUsage = new AppUsage();
   double apps;
-  String mins;
+  String mins, totalTime;
   final myController = TextEditingController();
   final myController0 = TextEditingController();
 
@@ -39,7 +39,8 @@ class _StandardPageState extends State<StandardPage> {
       Map<String, double> usage = await appUsage.fetchUsage(startDate, endDate);
       usage.removeWhere((key, val) => val == 0);
       setState(() => apps = calculate(usage));
-      mins = (apps / 60).toStringAsFixed(2);
+      totalTime = apps > 3600 ? (apps / 3600).toStringAsFixed(0) : (apps / 60).toStringAsFixed(0);
+      mins = apps > 3600 ? "$totalTime hours" : "$totalTime minutes";
       usage.forEach((k, v) {
         if (v > 3300) {
           DateTime now = DateTime.now().add(
@@ -116,92 +117,117 @@ class _StandardPageState extends State<StandardPage> {
         ],
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          //TOP PART
+          Column(
             children: <Widget>[
-              Text(
-                'Notification',
-                style: TextStyle(
-                    fontFamily: 'Lato',
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              ),
-              SizedBox(width: 180),
-              Switch(
-                activeTrackColor: Colors.black45,
-                activeColor: Colors.black,
-                value: isSwitched,
-                onChanged: (value) {
-                  setState(() {
-                    isSwitched = value;
-                  });
-                },
-              )
+              SizedBox(height: 10),
+              //Notification and Switch
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  //Notification Text
+                  Row(
+                    children: <Widget>[
+                      SizedBox(width: 40),
+                      Text(
+                        'Notification',
+                        style: TextStyle(
+                            fontFamily: 'Lato',
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+
+                  //Switch
+                  Row(
+                    children: <Widget>[
+                      Switch(
+                        activeTrackColor: Colors.black45,
+                        activeColor: Colors.black,
+                        value: isSwitched,
+                        onChanged: (value) {
+                          setState(() {
+                            isSwitched = value;
+                          });
+                        },
+                      ),
+                      SizedBox(width: 30),
+                    ],
+                  ),
+                ],
+              ),//Notification
             ],
           ),
-          SizedBox(height: 390),
-          Text(
-            isPressed ? 'Total time on mobile: $mins minutes' : '',
-            style: TextStyle(
-                fontSize: 20, fontFamily: 'Lato', fontWeight: FontWeight.bold),
-          ),
-          Text(
-            isPressed ? '(renew every 24 hours)' : '',
-            style: TextStyle(
-                fontSize: 20,
-                fontFamily: 'Lato',
-                fontWeight: FontWeight.normal),
-          ),
-          SizedBox(height: 20),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              SizedBox(width: 120),
-              FlatButton(
-                highlightColor: Colors.black12,
-                shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(30.0),
-                ),
-                color: isPressed ? Colors.black26 : Colors.black,
-                textColor: Colors.white,
-                padding: EdgeInsets.fromLTRB(30, 12, 30, 12),
-                child: Text(
-                  isPressed ? 'ENABLED' : 'ENABLE',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                onPressed: () async {
-                  Timer.periodic(new Duration(seconds: 10), (timer) {
-                    getUsageStats();
-                    print('You have spend $mins minutes');
-                    if (apps > 3300) {
-                      DateTime now = DateTime.now().add(
-                        Duration(seconds: 5),
-                      );
-                      singleNotification(
-                        now,
-                        "Notification",
-                        "You have been using your phone for too long!! Get up and do some thing",
-                        98123871,
-                      );
-                    } else if (apps > 3900) {
-                      timer.cancel();
-                    }
-                    if (isSwitched == false) {
-                      timer.cancel();
-                    }
-                  });
 
-                  setState(() {
-                    isPressed = true;
-                  });
-                },
+          //BOTTOM PART
+          Column(
+            children: <Widget>[
+              Text(
+                isPressed ? 'Total time on mobile: $mins' : '',
+                style: TextStyle(
+                    fontSize: 20, fontFamily: 'Lato', fontWeight: FontWeight.bold),
               ),
+              Text(
+                isPressed ? '(renew every 24 hours)\n' : ' \n',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'Lato',
+                    fontWeight: FontWeight.normal),
+              ),
+
+              //Enable Button
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  FlatButton(
+                    highlightColor: Colors.black12,
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0),
+                    ),
+                    color: isPressed ? Colors.black26 : Colors.black,
+                    textColor: Colors.white,
+                    padding: EdgeInsets.fromLTRB(30, 12, 30, 12),
+                    child: Text(
+                      isPressed ? 'ENABLED' : 'ENABLE',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onPressed: () async {
+                      Timer.periodic(new Duration(seconds: 10), (timer) {
+                        getUsageStats();
+                        print('You have spend $mins');
+                        if (apps > 3300) {
+                          DateTime now = DateTime.now().add(
+                            Duration(seconds: 5),
+                          );
+                          singleNotification(
+                            now,
+                            "Notification",
+                            "You have been using your phone for too long!! Get up and do some thing",
+                            98123871,
+                          );
+                        } else if (apps > 3900) {
+                          timer.cancel();
+                        }
+                        if (isSwitched == false) {
+                          timer.cancel();
+                        }
+                      });
+
+                      setState(() {
+                        isPressed = true;
+                      });
+                    },
+                  ),
+                  SizedBox(width: 40)
+                ],
+              ),
+              SizedBox(height: 30)
             ],
           ),
         ],

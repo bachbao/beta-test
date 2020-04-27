@@ -97,38 +97,40 @@ class _LoginStateState extends State<LoginState> {
           child: Padding(
             padding: const EdgeInsets.all(36.0),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                SizedBox(height: 50),
-                Text('Welcome to',
-                    style: TextStyle(
-                        fontSize: 50,
-                        fontFamily: 'Lato',
-                        fontWeight: FontWeight.bold)),
-                Text('FreeTime',
-                    style: TextStyle(
-                        fontSize: 50,
-                        fontFamily: 'Lato',
-                        fontWeight: FontWeight.bold)),
-                SizedBox(height: 20),
-                Image(image: AssetImage('assets/icon.png')),
-                SizedBox(height: 80),
-                Text(
-                  "Choose your plan",
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontFamily: 'Lato',
-                  ),
+                //Top Part
+                Column(
+                  children: <Widget>[
+                    SizedBox(height: 20),
+                    Text('Welcome to\n  FreeTime',
+                        style: TextStyle(
+                          fontSize: 50,
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.bold,
+                        )
+                    ),
+                    SizedBox(height: 10),
+                    Image(image: AssetImage('assets/icon.png')),
+                  ],
                 ),
-                SizedBox(height: 25.0),
-                standard,
-                SizedBox(
-                  height: 25.0,
-                ),
-                customize,
-                SizedBox(height: 25.0),
-                setting,
-                SizedBox(
-                  height: 15.0,
+                //Bottom Part
+                Column(
+                  children: <Widget>[
+                    Text(
+                      "Choose mode",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'Lato',
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    standard,
+                    SizedBox(height: 15),
+                    customize,
+                    SizedBox(height: 15),
+                    setting,
+                  ],
                 ),
               ],
             ),
